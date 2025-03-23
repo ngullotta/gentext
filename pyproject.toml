@@ -16,6 +16,10 @@ pydub = "^0.25.1"
 moviepy = "^2.1.2"
 librosa = "^0.11.0"
 openai-whisper = "^20240930"
+google-api-python-client = "^2.165.0"
+google-auth = "^2.38.0"
+google-auth-httplib2 = "^0.2.0"
+google-auth-oauthlib = "0.4.1"
 
 
 [build-system]
