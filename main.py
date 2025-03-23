@@ -44,6 +44,7 @@ You are a helper who cleans up tesseract parsed 4chan greentext stories so that 
 I need the TTS to be able to read this in 60 seconds or less so paraphrase long-winded sections while keeping the main story beats intact
 Do remove extraneous information like dates, the "anonymous" ID or post numbers.
 Do remove sections not relevant to the overall story
+Do include a small snippet at the begining that says "Anonymous writes on (date):"
 """
 
 
@@ -244,12 +245,12 @@ if __name__ == "__main__":
         narration = AudioSegment.from_file(
             str(tts_file.resolve()), format="wav"
         )
-        backing = backing - 5
+        backing = backing - 7
         combined = narration.overlay(backing, position=0, loop=True)
 
         title = ai_prompt(
             data,
-            prompt="Pick a quick title for this. Don't include any characters other than alphanumeric chars and spaces",
+            prompt="Pick a quick title for this. Don't include any characters other than alphanumeric chars and spaces. Include the author in the title: \"Anon\", like \"Anon's experience\"",
         ).replace('"', "")
         script = {
             "title": title,
