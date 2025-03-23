@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "greentext"
+version = "0.1.0"
+description = ""
+authors = ["ngullotta <nikolaus.gullotta@protonmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+pytesseract = "^0.3.13"
+coqui-tts = "^0.26.0"
+opencv-python = "^4.11.0.86"
+openai = "1.66"
+httpx = "0.27.2"
+pydub = "^0.25.1"
+moviepy = "^2.1.2"
+librosa = "^0.11.0"
+openai-whisper = "^20240930"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
