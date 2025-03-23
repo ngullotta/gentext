@@ -68,7 +68,7 @@ def main():
         print("No script data found")
         exit(1)
 
-    description = data["text"] + "\n" + data["attribution"]
+    description = data["text"] + "\n\n" + data["attributions"]
     file = "/".join([sys.argv[1], "output.mp4"])
 
     tags = data.get("tags", [])
@@ -106,7 +106,7 @@ def main():
             "tags": tags,
           },
           "status": {
-            "privacyStatus": "private",
+            "privacyStatus": "public",
             "selfDeclaredMadeForKids": False
           }
         },
