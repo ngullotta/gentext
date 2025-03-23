@@ -186,9 +186,18 @@ def process_image(image_path, output_path, crop_percentage=0.5):
 
 
 MOOD_TO_BACKING_TRACKS = {
-    "spooky": "spooky.mp3",
-    "mysterious": "spooky.mp3",
-    "funny": "funny.mp3",
+    "spooky": {
+        "file": "spooky.mp3",
+        "attribution": "jazz_music_loop.mp3 by NikoSardas -- https://freesound.org/s/456797/ -- License: Attribution 4.0",
+    },
+    "mysterious": {
+        "file": "spooky.mp3",
+        "attribution": "jazz_music_loop.mp3 by NikoSardas -- https://freesound.org/s/456797/ -- License: Attribution 4.0",
+    },
+    "funny": {
+        "file": "funny.mp3",
+        "attribution": "Bright and Fun Upbeat Joy by LolaMoore -- https://freesound.org/s/759605/ -- License: Attribution 4.0",
+    },
 }
 
 if __name__ == "__main__":
@@ -225,7 +234,7 @@ if __name__ == "__main__":
         )
         mood = ai_prompt(data, PROMPT)
         mood_audio_path = pathlib.Path(
-            f"backing-tracks/{MOOD_TO_BACKING_TRACKS[mood]}"
+            f"backing-tracks/{MOOD_TO_BACKING_TRACKS[mood]['file']}"
         )
         backing = AudioSegment.from_file(
             str(mood_audio_path.resolve()),
@@ -242,7 +251,12 @@ if __name__ == "__main__":
             data,
             prompt="Pick a quick title for this. Don't include any characters other than alphanumeric chars and spaces",
         ).replace('"', "")
-        script = {"title": title, "mood": mood, "text": data}
+        script = {
+            "title": title,
+            "mood": mood,
+            "text": data,
+            "attributions": MOOD_TO_BACKING_TRACKS[mood]["attribution"],
+        }
 
         # Write asset bundle
         movie = args.output / "scripts" / title.lower().replace(" ", "_")
