@@ -102,10 +102,12 @@ def main():
           "snippet": {
             "categoryId": "24",
             "description": description,
-            "title": data["title"]
+            "title": data["title"],
+            "tags": tags,
           },
           "status": {
-            "privacyStatus": "private"
+            "privacyStatus": "private",
+            "selfDeclaredMadeForKids": False
           }
         },
         
