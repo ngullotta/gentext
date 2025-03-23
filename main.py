@@ -233,7 +233,7 @@ if __name__ == "__main__":
             "In one word, give a genre for this short story. Valid options are: "
             + ", ".join(MOOD_TO_BACKING_TRACKS.keys())
         )
-        mood = ai_prompt(data, PROMPT)
+        mood = ai_prompt(data, PROMPT).lower()
         mood_audio_path = pathlib.Path(
             f"backing-tracks/{MOOD_TO_BACKING_TRACKS[mood]['file']}"
         )
