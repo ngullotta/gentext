@@ -260,14 +260,14 @@ if __name__ == "__main__":
         }
 
         # Write asset bundle
-        movie = args.output / "scripts" / title.lower().replace(" ", "_")
-        movie.mkdir()
+        movie = args.output / "scripts" / title.lower().replace(" ", "_").replace("'", "")
+        movie.mkdir(parents=True)
         combined.export(movie / "audio.wav", format="wav")
         with open(movie / "script.json", "w") as fp:
             fp.write(json.dumps(script, indent=4))
 
         images = movie / "images"
-        images.mkdir()
+        images.mkdir(parents=True)
 
         for f in pathlib.Path("greentexts").iterdir():
             if f.stem == file.stem:
