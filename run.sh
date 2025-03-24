@@ -17,7 +17,7 @@ for file in "$@"; do
 
     cp -r "$TMPDIR/scripts/$SCRIPT_NAME" output/scripts/
 
-    cp "$TMPDIR/scripts/$SCRIPT_NAME/output.mp4" "TiktokAutoUploader/VideosDirPath/$SCRIPT_NAME.mp4"
+    # cp "$TMPDIR/scripts/$SCRIPT_NAME/output.mp4" "TiktokAutoUploader/VideosDirPath/$SCRIPT_NAME.mp4"
 
     # pushd "TiktokAutoUploader" > /dev/null
 
