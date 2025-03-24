@@ -15,9 +15,9 @@ for file in "$@"; do
 
     python upload.py "$TMPDIR/scripts/$SCRIPT_NAME/"
 
-    cp -r "$TMPDIR/scripts/$SCRIPT_NAME" output/scripts/ && rm -rf "$TMPDIR"
+    cp -r "$TMPDIR/scripts/$SCRIPT_NAME" output/scripts/
 
-    cp "$TMPDIR/scripts/$SCRIPT_NAME/output.mpv" "TiktokAutoUploader/VideosDirPath/$SCRIPT_NAME.mp4"
+    cp "$TMPDIR/scripts/$SCRIPT_NAME/output.mp4" "TiktokAutoUploader/VideosDirPath/$SCRIPT_NAME.mp4"
 
     # pushd "TiktokAutoUploader" > /dev/null
 
@@ -30,9 +30,11 @@ for file in "$@"; do
 
     # title="$(jq < "$TMPDIR/scripts/$SCRIPT_NAME/script.json" .title)"
     # title="${title:1:-1}"
-    # python cli.py upload.py --users anontalks -v "$SCRIPT_NAME.mp4" -t "$title #fyp #4chan #greentext #funny #weird #horror"
+    # python cli.py upload --users anontalks -v "$SCRIPT_NAME.mp4" -t "$title #fyp #4chan #greentext #funny #weird #horror"
 
-    # popd
+    # popd > /dev/null
+
+    rm -rf "$TMPDIR"
 
     sleep 60
 done
