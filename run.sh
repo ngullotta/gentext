@@ -28,7 +28,7 @@ for file in "$@"; do
     #     python cli.py login -n anontalks
     # fi
 
-    # title="$(jq < \"$TMPDIR/scripts/$SCRIPT_NAME/script.json\" .title)"
+    # title="$(jq < "$TMPDIR/scripts/$SCRIPT_NAME/script.json" .title)"
     # title="${title:1:-1}"
     # python cli.py upload.py --users anontalks -v "$SCRIPT_NAME.mp4" -t "$title #fyp #4chan #greentext #funny #weird #horror"
 
