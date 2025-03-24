@@ -26,7 +26,7 @@ if [[ "$2" == "--random-clip" ]]; then
         -c:v libx264 \
         -vf "$SUBTITLES" \
         -t "$DURATION" \
-        output.mp4 && mpv output.mp4
+        output.mp4
 else
     ffmpeg \
         -hwaccel cuda \
@@ -43,7 +43,7 @@ else
         -preset p1 \
         -t $DURATION \
         -s 1080x1920 \
-        output.mp4 && mpv output.mp4
+        output.mp4
 fi
 
 popd > /dev/null
