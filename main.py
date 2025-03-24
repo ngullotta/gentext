@@ -12,7 +12,7 @@ import pytesseract
 import torch
 import whisper
 from PIL import Image, ImageFilter
-from pydub import AudioSegment
+from pydub import AudioSegment, effects
 from pydub.silence import split_on_silence
 from TTS.api import TTS
 
@@ -45,6 +45,7 @@ I need the TTS to be able to read this in 60 seconds or less so paraphrase long-
 Do remove extraneous information like dates, the "anonymous" ID or post numbers.
 Do remove sections not relevant to the overall story
 Do include a small snippet at the begining that says "Anonymous writes on (date):"
+If there is no date, just write "Anonymous writes"
 Do not include any non-ascii characters
 """
 
@@ -189,8 +190,16 @@ def process_image(image_path, output_path, crop_percentage=0.5):
 
 MOOD_TO_BACKING_TRACKS = {
     "spooky": {
-        "file": "spooky.mp3",
-        "attribution": "jazz_music_loop.mp3 by NikoSardas -- https://freesound.org/s/456797/ -- License: Attribution 4.0",
+        "file": "creepy.wav",
+        "attribution": ""# None needed
+    },
+    "uplifting": {
+        "file": "uplifting.flac",
+        "attribution": "" # None needed
+    },
+    "creepy": {
+        "file": "creepy.wav",
+        "attribution": "" # None needed
     },
     "mysterious": {
         "file": "spooky.mp3",
@@ -200,18 +209,31 @@ MOOD_TO_BACKING_TRACKS = {
         "file": "funny.mp3",
         "attribution": "Bright and Fun Upbeat Joy by LolaMoore -- https://freesound.org/s/759605/ -- License: Attribution 4.0",
     },
+    "spiritual": {
+        "file": "spiritual.mp3",
+        "attribution": "Calm Horizons (30s) by Universfield -- https://freesound.org/s/792704/ -- License: Attribution 4.0"
+    },
+    "cringe": {
+        "file": "cringe.mp3",
+        "attribution": "Muzak 2 by TeffyD1 -- https://freesound.org/s/752530/ -- License: Attribution 4.0"
+    },
+    "angry": {
+        "file": "angry.mp3",
+        "attribution": "The Descent by Kevin MacLeod"
+    }
 }
 
 if __name__ == "__main__":
     args = parser.parse_args()
     for file in args.files:
         data = ""
-        if file.suffix in [".png", ".jpeg"]:
+        if file.suffix in [".png", ".jpeg", ".jpg"]:
             img = PIL.Image.open(file)
             data = tess_read(img)
 
             if args.no_cleanup is False:
                 data = ai_prompt(data)
+                data = "".join([c if ord(c) <= 0x7F else "" for c in data])
 
         if file.suffix in [".txt"]:
             data = file.read_text()
@@ -246,7 +268,7 @@ if __name__ == "__main__":
         narration = AudioSegment.from_file(
             str(tts_file.resolve()), format="wav"
         )
-        backing = backing - 7
+
         combined = narration.overlay(backing, position=0, loop=True)
 
         title = ai_prompt(
@@ -291,14 +313,14 @@ if __name__ == "__main__":
         def generate_srt(audio_path, srt_path):
             model = whisper.load_model("base")
             result = model.transcribe(
-                audio_path, 
-                word_timestamps=True, 
+                audio_path,
+                word_timestamps=True,
                 verbose=False,
                 initial_prompt="""
                 You are transcribing anonymous stories from 4chan.
                 Don't confuse like-sounding words. Ensure that the beginning matches
                 with \"Anoynmous Writes\": X"
-                """
+                """,
             )
 
             with open(srt_path, "w", encoding="utf-8") as srt_file:
@@ -311,3 +333,5 @@ if __name__ == "__main__":
                     srt_file.write(f"{text}\n\n")
 
         generate_srt(str(tts_file.resolve()), str(movie / "subtitles.srt"))
+
+        print("Output Available @", str(movie.resolve()))
