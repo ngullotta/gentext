@@ -11,16 +11,14 @@
 #    transmission failure. To learn more about resumable uploads, see:
 #    https://developers.google.com/api-client-library/python/guide/media_upload
 
+import json
 import os
+import sys
 
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
-
 from googleapiclient.http import MediaFileUpload
-
-import json
-import sys
 
 scopes = ["https://www.googleapis.com/auth/youtube.upload"]
 
@@ -44,6 +42,7 @@ ID	Category name
 29	Nonprofits & Activism
 """
 
+
 def main():
     # Disable OAuthlib's HTTPS verification when running locally.
     # *DO NOT* leave this option enabled in production.
@@ -55,10 +54,12 @@ def main():
 
     # Get credentials and create an API client
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-        client_secrets_file, scopes)
+        client_secrets_file, scopes
+    )
     credentials = flow.run_local_server()
     youtube = googleapiclient.discovery.build(
-        api_service_name, api_version, credentials=credentials)
+        api_service_name, api_version, credentials=credentials
+    )
 
     script = "/".join([sys.argv[1], "script.json"])
     with open(script) as fp:
@@ -68,7 +69,13 @@ def main():
         print("No script data found")
         exit(1)
 
-    description = data["text"] + "\n\n" + data["attributions"]
+    description = (
+        data["text"]
+        + "\n\n"
+        + data["attributions"]
+        + "\n\n"
+        + "Gameplay courtesy of: https://www.youtube.com/@NoCopyrightGameplays"
+    )
     file = "/".join([sys.argv[1], "output.mp4"])
 
     tags = data.get("tags", [])
@@ -92,32 +99,32 @@ def main():
             "4chan humor",
             "Weird 4chan stories",
             "Funny internet stories",
-            "Internet culture"
+            "Internet culture",
         ]
     )
 
     request = youtube.videos().insert(
         part="snippet,status",
         body={
-          "snippet": {
-            "categoryId": "24",
-            "description": description,
-            "title": data["title"],
-            "tags": tags,
-          },
-          "status": {
-            "privacyStatus": "public",
-            "selfDeclaredMadeForKids": False
-          }
+            "snippet": {
+                "categoryId": "24",
+                "description": description,
+                "title": data["title"],
+                "tags": tags,
+            },
+            "status": {
+                "privacyStatus": "public",
+                "selfDeclaredMadeForKids": False,
+            },
         },
-        
         # TODO: For this request to work, you must replace "YOUR_FILE"
         #       with a pointer to the actual file you are uploading.
-        media_body=MediaFileUpload(file)
+        media_body=MediaFileUpload(file),
     )
     response = request.execute()
 
     print(response)
+
 
 if __name__ == "__main__":
     main()
