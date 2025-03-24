@@ -324,10 +324,17 @@ if __name__ == "__main__":
             )
 
             with open(srt_path, "w", encoding="utf-8") as srt_file:
+                out = data.replace("\n", "")
+                while "  " in out:
+                    out = out.replace("  ", " ")
                 for i, segment in enumerate(result["segments"]):
                     start_time = format_timestamp(segment["start"])
                     end_time = format_timestamp(segment["end"])
                     text = segment["text"].strip()
+                    parts = text.split(" ")
+                    s, e = parts[0], parts[-1]
+                    if out.find(s) != -1 and out.find(e) != -1:
+                        text = out[out.find(s):out.find(e) + len(e)]
                     srt_file.write(f"{i+1}\n")
                     srt_file.write(f"{start_time} --> {end_time}\n")
                     srt_file.write(f"{text}\n\n")
