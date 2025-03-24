@@ -32,6 +32,14 @@ for file in "$@"; do
     # title="${title:1:-1}"
     # python cli.py upload --users anontalks -v "$SCRIPT_NAME.mp4" -t "$title #fyp #4chan #greentext #funny #weird #horror"
 
+    # if [ $? -ne 0 ]; then
+    #     echo "Failed to upload to tiktok please run this command manually after fixing whatever the issues are"
+    #     CMD="python cli.py upload --users anontalks -v \"$SCRIPT_NAME.mp4\" -t \"$title #fyp #4chan #greentext #funny #weird #horror\""
+    #     echo "$CMD"
+    #     stat "file.txt" > /dev/null 2>&1 || touch "failed.txt"
+    #     echo "$CMD" >> "failed.txt"
+    # fi
+
     # popd > /dev/null
 
     rm -rf "$TMPDIR"
