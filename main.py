@@ -45,6 +45,7 @@ I need the TTS to be able to read this in 60 seconds or less so paraphrase long-
 Do remove extraneous information like dates, the "anonymous" ID or post numbers.
 Do remove sections not relevant to the overall story
 Do include a small snippet at the begining that says "Anonymous writes on (date):"
+Do not include any non-ascii characters
 """
 
 
@@ -289,7 +290,16 @@ if __name__ == "__main__":
 
         def generate_srt(audio_path, srt_path):
             model = whisper.load_model("base")
-            result = model.transcribe(audio_path, verbose=False)
+            result = model.transcribe(
+                audio_path, 
+                word_timestamps=True, 
+                verbose=False,
+                initial_prompt="""
+                You are transcribing anonymous stories from 4chan.
+                Don't confuse like-sounding words. Ensure that the beginning matches
+                with \"Anoynmous Writes\": X"
+                """
+            )
 
             with open(srt_path, "w", encoding="utf-8") as srt_file:
                 for i, segment in enumerate(result["segments"]):
