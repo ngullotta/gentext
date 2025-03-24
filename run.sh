@@ -17,5 +17,22 @@ for file in "$@"; do
 
     cp -r "$TMPDIR/scripts/$SCRIPT_NAME" output/scripts/ && rm -rf "$TMPDIR"
 
+    cp "$TMPDIR/scripts/$SCRIPT_NAME/output.mpv" "TiktokAutoUploader/VideosDirPath/$SCRIPT_NAME.mp4"
+
+    # pushd "TiktokAutoUploader" > /dev/null
+
+    # COOKIE="CookiesDir/tiktok_session-anontalks.cookie"
+    # if [[ $(find "$COOKIE" -mtime +1 -print) ]]; then
+    #     echo "Cookie exists and is older than 1 day"
+    #     rm -rf "$COOKIE"
+    #     python cli.py login -n anontalks
+    # fi
+
+    # title="$(jq < \"$TMPDIR/scripts/$SCRIPT_NAME/script.json\" .title)"
+    # title="${title:1:-1}"
+    # python cli.py upload.py --users anontalks -v "$SCRIPT_NAME.mp4" -t "$title #fyp #4chan #greentext #funny #weird #horror"
+
+    # popd
+
     sleep 60
 done
