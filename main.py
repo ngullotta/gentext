@@ -250,7 +250,7 @@ if __name__ == "__main__":
 
         title = ai_prompt(
             data,
-            prompt="Pick a quick title for this. Don't include any characters other than alphanumeric chars and spaces. Include the author in the title: \"Anon\", like \"Anon's experience\"",
+            prompt='Pick a quick title for this. Don\'t include any characters other than alphanumeric chars and spaces. Include the author in the title: "Anon", like "Anon\'s experience"',
         ).replace('"', "")
         script = {
             "title": title,
@@ -260,7 +260,11 @@ if __name__ == "__main__":
         }
 
         # Write asset bundle
-        movie = args.output / "scripts" / title.lower().replace(" ", "_").replace("'", "")
+        movie = (
+            args.output
+            / "scripts"
+            / title.lower().replace(" ", "_").replace("'", "")
+        )
         movie.mkdir(parents=True)
         combined.export(movie / "audio.wav", format="wav")
         with open(movie / "script.json", "w") as fp:
