@@ -189,18 +189,9 @@ def process_image(image_path, output_path, crop_percentage=0.5):
 
 
 MOOD_TO_BACKING_TRACKS = {
-    "spooky": {
-        "file": "creepy.wav",
-        "attribution": ""# None needed
-    },
-    "uplifting": {
-        "file": "uplifting.flac",
-        "attribution": "" # None needed
-    },
-    "creepy": {
-        "file": "creepy.wav",
-        "attribution": "" # None needed
-    },
+    "spooky": {"file": "creepy.wav", "attribution": ""},  # None needed
+    "uplifting": {"file": "uplifting.flac", "attribution": ""},  # None needed
+    "creepy": {"file": "creepy.wav", "attribution": ""},  # None needed
     "mysterious": {
         "file": "spooky.mp3",
         "attribution": "jazz_music_loop.mp3 by NikoSardas -- https://freesound.org/s/456797/ -- License: Attribution 4.0",
@@ -211,16 +202,16 @@ MOOD_TO_BACKING_TRACKS = {
     },
     "spiritual": {
         "file": "spiritual.mp3",
-        "attribution": "Calm Horizons (30s) by Universfield -- https://freesound.org/s/792704/ -- License: Attribution 4.0"
+        "attribution": "Calm Horizons (30s) by Universfield -- https://freesound.org/s/792704/ -- License: Attribution 4.0",
     },
     "cringe": {
         "file": "cringe.mp3",
-        "attribution": "Muzak 2 by TeffyD1 -- https://freesound.org/s/752530/ -- License: Attribution 4.0"
+        "attribution": "Muzak 2 by TeffyD1 -- https://freesound.org/s/752530/ -- License: Attribution 4.0",
     },
     "angry": {
         "file": "angry.mp3",
-        "attribution": "The Descent by Kevin MacLeod"
-    }
+        "attribution": "The Descent by Kevin MacLeod",
+    },
 }
 
 if __name__ == "__main__":
@@ -334,12 +325,15 @@ if __name__ == "__main__":
                     parts = text.split(" ")
                     s, e = parts[0], parts[-1]
                     if out.find(s) != -1 and out.find(e) != -1:
-                        text = out[out.find(s):out.find(e) + len(e)]
+                        text = out[out.find(s) : out.find(e) + len(e)]
                         out = out.replace(text, "")
                     srt_file.write(f"{i+1}\n")
                     srt_file.write(f"{start_time} --> {end_time}\n")
                     srt_file.write(f"{text}\n\n")
 
         generate_srt(str(tts_file.resolve()), str(movie / "subtitles.srt"))
-
+        p = pathlib.Path(file)
+        archive =  p.parent / "archive"
+        archive.mkdir(exist_ok=True)
+        p.rename(archive / p.name)
         print("Output Available @", str(movie.resolve()))
