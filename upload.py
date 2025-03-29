@@ -121,7 +121,30 @@ def main():
         #       with a pointer to the actual file you are uploading.
         media_body=MediaFileUpload(file),
     )
-    response = request.execute()
+    
+    try:
+        response = request.execute()
+    except:
+        # Some fail due to vulgar descriptions
+        request = youtube.videos().insert(
+            part="snippet,status",
+            body={
+                "snippet": {
+                    "categoryId": "24",
+                    "description": "",
+                    "title": data["title"],
+                    "tags": tags,
+                },
+                "status": {
+                    "privacyStatus": "public",
+                    "selfDeclaredMadeForKids": False,
+                },
+            },
+            # TODO: For this request to work, you must replace "YOUR_FILE"
+            #       with a pointer to the actual file you are uploading.
+            media_body=MediaFileUpload(file),
+        )
+        response = request.execute()
 
     print(response)
 
