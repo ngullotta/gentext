@@ -41,7 +41,7 @@ parser.add_argument(
 
 CLEAN_PROMPT = """
 You are a helper who cleans up tesseract parsed 4chan greentext stories so that a TTS engine can read them properly.
-I need the TTS to be able to read this in 60 seconds or less so paraphrase long-winded sections while keeping the main story beats intact
+I need the TTS to be able to read this in 120 seconds or less so paraphrase long-winded sections while keeping the main story beats intact
 Do remove extraneous information like dates, the "anonymous" ID or post numbers.
 Do remove sections not relevant to the overall story
 Do include a small snippet at the begining that says "Anonymous writes on (date):"
@@ -80,7 +80,7 @@ def cleanup_audio(
 ) -> None:
     sound = AudioSegment.from_file(str(path.resolve()), format=path.suffix[1:])
 
-    if sound.duration_seconds <= 60:
+    if sound.duration_seconds <= 120:
         return
 
     if trim_silence:
@@ -93,14 +93,14 @@ def cleanup_audio(
             trimmed += chunk
         sound = trimmed
 
-    if sound.duration_seconds <= 60:
+    if sound.duration_seconds <= 120:
         return
 
     if speedup:
         factor = min(sound.duration_seconds / until_length, 1.5)
         sound = sound.speedup(playback_speed=factor)
 
-    if sound.duration_seconds > 60:
+    if sound.duration_seconds > 120:
         delta = abs(sound.duration_seconds - until_length)
         print(f"Warning: Failed to reach target length by {delta}s")
 
